@@ -28,12 +28,12 @@ Dependencies are stored in [`package.json`](package.json).
 The most important file for understanding the structure of the template is
 `server.js`. This is where the actual Express `app` object is created, where
 the middlewares and routes are registered, and more. To register a routefile,
-follow the pattern established here with `exampleRoutes` and `userRoutes`. If
+follow the pattern established here with `teamRoutes` and `userRoutes`. If
 you want to add any middlewares to your app, do that here.
 
 The `app` directory contains models and route files. Models are simply Mongoose
 models. To create your own, follow the patterns established in
-`app/models/example.js`. Route files are somewhat similar to controllers in
+`app/models/team.js`. Route files are somewhat similar to controllers in
 Rails, but they cover more functionality, including serialization and deciding
 which HTTP verbs to accept and what to do with them.
 
@@ -92,9 +92,9 @@ curl --include --request POST http://localhost:4741/sign-up \
   --header "Content-Type: application/json" \
   --data '{
     "credentials": {
-      "email": "an@example.email",
-      "password": "an example password",
-      "password_confirmation": "an example password"
+      "email": "an@team.email",
+      "password": "an team password",
+      "password_confirmation": "an team password"
     }
   }'
 ```
@@ -112,7 +112,7 @@ Content-Type: application/json; charset=utf-8
 {
   "user": {
     "id": 1,
-    "email": "an@example.email"
+    "email": "an@team.email"
   }
 }
 ```
@@ -126,8 +126,8 @@ curl --include --request POST http://localhost:4741/sign-in \
   --header "Content-Type: application/json" \
   --data '{
     "credentials": {
-      "email": "an@example.email",
-      "password": "an example password"
+      "email": "an@team.email",
+      "password": "an team password"
     }
   }'
 ```
@@ -145,7 +145,7 @@ Content-Type: application/json; charset=utf-8
 {
   "user": {
     "id": 1,
-    "email": "an@example.email",
+    "email": "an@team.email",
     "token": "33ad6372f795694b333ec5f329ebeaaa"
   }
 }
@@ -161,7 +161,7 @@ curl --include --request PATCH http://localhost:4741/change-password/ \
   --header "Content-Type: application/json" \
   --data '{
     "passwords": {
-      "old": "an example password",
+      "old": "an team password",
       "new": "super sekrit"
     }
   }'

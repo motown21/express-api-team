@@ -33,9 +33,7 @@ router.post('/sign-up', (req, res, next) => {
     // reject any requests where `credentials.password` is not present, or where
     // the password is an empty string
     .then(credentials => {
-      if (!credentials ||
-          !credentials.password ||
-          credentials.password !== credentials.password_confirmation) {
+      if (!credentials || !credentials.password || credentials.password !== credentials.password_confirmation) {
         throw new BadParamsError()
       }
     })
