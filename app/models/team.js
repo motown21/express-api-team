@@ -9,19 +9,15 @@ const teamSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  mascot: {
+    type: String,
+    required: true
+  },
   record: {
     type: String,
     required: true
   },
   city: {
-    type: String,
-    required: true
-  },
-  player: {
-    type: String,
-    required: true
-  },
-  mascot: {
     type: String,
     required: true
   },
@@ -34,4 +30,4 @@ const teamSchema = new mongoose.Schema({
   timestamps: true
 })
 
-module.exports = mongoose.model('team', teamSchema)
+module.exports = mongoose.model('Team', teamSchema)

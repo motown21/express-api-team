@@ -4,7 +4,7 @@ const express = require('express')
 const passport = require('passport')
 
 // pull in Mongoose model for teams
-const team = require('../models/team')
+const Team = require('../models/team')
 
 // this is a collection of methods that help us detect situations when we need
 // to throw a custom error
@@ -30,7 +30,7 @@ const router = express.Router()
 // INDEX
 // GET /teams
 router.get('/teams', requireToken, (req, res, next) => {
-  team.find()
+  Team.find()
     .then(teams => {
       // `teams` will be an array of Mongoose documents
       // we want to convert each one to a POJO, so we use `.map` to
@@ -47,7 +47,7 @@ router.get('/teams', requireToken, (req, res, next) => {
 // GET /teams/5a7db6c74d55bc51bdf39793
 router.get('/teams/:id', requireToken, (req, res, next) => {
   // req.params.id will be set based on the `:id` in the route
-  team.findById(req.params.id)
+  Team.findById(req.params.id)
     .then(handle404)
     // if `findById` is succesful, respond with 200 and "team" JSON
     .then(team => res.status(200).json({ team: team.toObject() }))
@@ -60,8 +60,9 @@ router.get('/teams/:id', requireToken, (req, res, next) => {
 router.post('/teams', requireToken, (req, res, next) => {
   // set owner of new team to be current user
   req.body.team.owner = req.user.id
+  const teamData = req.body.team
 
-  team.create(req.body.team)
+  Team.create(teamData)
     // respond to succesful `create` with status 201 and JSON of new "team"
     .then(team => {
       res.status(201).json({ team: team.toObject() })
@@ -79,7 +80,7 @@ router.patch('/teams/:id', requireToken, removeBlanks, (req, res, next) => {
   // owner, prevent that by deleting that key/value pair
   delete req.body.team.owner
 
-  team.findById(req.params.id)
+  Team.findById({id: req.params._id, owner: req.user.id})
     .then(handle404)
     .then(team => {
       // pass the `req` object and the Mongoose record to `requireOwnership`
@@ -98,7 +99,7 @@ router.patch('/teams/:id', requireToken, removeBlanks, (req, res, next) => {
 // DESTROY
 // DELETE /teams/5a7db6c74d55bc51bdf39793
 router.delete('/teams/:id', requireToken, (req, res, next) => {
-  team.findById(req.params.id)
+  Team.findById({id: req.params._id, owner: req.user.id})
     .then(handle404)
     .then(team => {
       // throw an error if current user doesn't own `team`

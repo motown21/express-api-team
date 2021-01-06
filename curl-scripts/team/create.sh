@@ -10,8 +10,11 @@ curl "${API}${URL_PATH}" \
   --header "Authorization: Bearer ${TOKEN}" \
   --data '{
     "team": {
-      "text": "'"${TEXT}"'",
-      "title": "'"${TITLE}"'"
+      "name": "'"${NAME}"'",
+      "coach": "'"${COACH}"'",
+      "mascot": "'"${MASCOT}"'",
+      "record": "'"${RECORD}"'",
+      "city": "'"${CITY}"'"
     }
   }'
 
