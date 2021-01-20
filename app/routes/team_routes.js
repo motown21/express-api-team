@@ -14,11 +14,11 @@ const customErrors = require('../../lib/custom_errors')
 const handle404 = customErrors.handle404
 // we'll use this function to send 401 when a user tries to modify a resource
 // that's owned by someone else
-const requireOwnership = customErrors.requireOwnership
+// const requireOwnership = customErrors.requireOwnership
 
 // this is middleware that will remove blank fields from `req.body`, e.g.
 // { team: { title: '', text: 'foo' } } -> { team: { text: 'foo' } }
-const removeBlanks = require('../../lib/remove_blank_fields')
+
 // passing this as a second argument to `router.<verb>` will make it
 // so that a token MUST be passed for that route to be available
 // it will also set `req.user`
@@ -30,7 +30,7 @@ const router = express.Router()
 // INDEX
 // GET /teams
 router.get('/teams', requireToken, (req, res, next) => {
-  Team.find()
+  Team.find({ owner: req.user._id })
     .then(teams => {
       // `teams` will be an array of Mongoose documents
       // we want to convert each one to a POJO, so we use `.map` to
@@ -75,21 +75,23 @@ router.post('/teams', requireToken, (req, res, next) => {
 
 // UPDATE
 // PATCH /teams/5a7db6c74d55bc51bdf39793
-router.patch('/teams/:id', requireToken, removeBlanks, (req, res, next) => {
+router.patch('/teams/:id', requireToken, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
   delete req.body.team.owner
-
-  Team.findById({id: req.params._id, owner: req.user.id})
+  console.log('id is' + req.params.id)
+  console.log('Owner is' + req.user._id)
+  // Team.find({id: req.params.id, owner: req.user._id})
+  Team.findOneAndUpdate({ _id: req.params.id, owner: req.user._id }, req.body.team)
     .then(handle404)
-    .then(team => {
-      // pass the `req` object and the Mongoose record to `requireOwnership`
-      // it will throw an error if the current user isn't the owner
-      requireOwnership(req, team)
+  // .then(team => {
+  //   // pass the `req` object and the Mongoose record to `requireOwnership`
+  //   // it will throw an error if the current user isn't the owner
+  //   // requireOwnership(req, team)
 
-      // pass the result of Mongoose's `.update` to the next `.then`
-      return team.updateOne(req.body.team)
-    })
+    //   // pass the result of Mongoose's `.update` to the next `.then`
+    //   return team.update(req.body.team)
+    // })
     // if that succeeded, return 204 and no JSON
     .then(() => res.sendStatus(204))
     // if an error occurs, pass it to the handler
@@ -99,15 +101,17 @@ router.patch('/teams/:id', requireToken, removeBlanks, (req, res, next) => {
 // DESTROY
 // DELETE /teams/5a7db6c74d55bc51bdf39793
 router.delete('/teams/:id', requireToken, (req, res, next) => {
-  Team.findById({id: req.params._id, owner: req.user.id})
+  console.log('id is' + req.params.id)
+  console.log('Owner is' + req.user._id)
+  Team.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
     .then(handle404)
-    .then(team => {
-      // throw an error if current user doesn't own `team`
-      requireOwnership(req, team)
-      // delete the team ONLY IF the above didn't throw
-      team.deleteOne()
-    })
-    // send back 204 and no content if the deletion succeeded
+    // .then(team => {
+    //   // throw an error if current user doesn't own `team`
+    //   requireOwnership(req, team)
+    //   // delete the team ONLY IF the above didn't throw
+    //   team.findOneAndDelete()
+    // })
+    // // send back 204 and no content if the deletion succeeded
     .then(() => res.sendStatus(204))
     // if an error occurs, pass it to the handler
     .catch(next)
