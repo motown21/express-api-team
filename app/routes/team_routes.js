@@ -43,17 +43,17 @@ router.get('/teams', requireToken, (req, res, next) => {
     .catch(next)
 })
 
-// SHOW
-// GET /teams/5a7db6c74d55bc51bdf39793
-router.get('/teams/:id', requireToken, (req, res, next) => {
-  // req.params.id will be set based on the `:id` in the route
-  Team.findOne(req.params.id)
-    .then(handle404)
-    // if `findById` is succesful, respond with 200 and "team" JSON
-    .then(team => res.status(200).json({ team: team.toObject() }))
-    // if an error occurs, pass it to the handler
-    .catch(next)
-})
+// // SHOW
+// // GET /teams/5a7db6c74d55bc51bdf39793
+// router.get('/teams/:id', requireToken, (req, res, next) => {
+//   // req.params.id will be set based on the `:id` in the route
+//   Team.findOne({ _id: req.params.id, owner: req.user._id })
+//     .then(handle404)
+//     // if `findById` is succesful, respond with 200 and "team" JSON
+//     .then(team => res.status(200).json({ team: team.toObject() }))
+//     // if an error occurs, pass it to the handler
+//     .catch(next)
+// })
 
 // CREATE
 // POST /teams

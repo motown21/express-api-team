@@ -11,9 +11,13 @@ front-end https://motown21.github.io/team-project-client/
 back-end https://motown21.github.io/express-api-team/
 
 
-## List of technologies used
-GA express api lesson 
-https://mongoosejs.com/docs/api/model.html
+## TECHNOLOGIES USED
+- express
+- api
+- mongoose
+- mongo DB
+- Heroku
+- js
 
 ## PLAINNING
 
@@ -71,7 +75,7 @@ Using mongoose models that were given with the api template did not work for my 
 ### Story 2
 I got confused on how my id was being stored on the front end and backend which created issues when the api call had an id as undefined i learned that its always best to console log to be certain whats being used to prevent small is as _ from breaking code.
 
-## Unsolved problem
+### Unsolved problem
 I would like to add a player model and route for the second version of the project i would also like to finish my show route now that im aware of the mongoose problem.
 
 ### USER STROIES
