@@ -1,4 +1,3 @@
-#!/bin/sh
 curl "${API}${URL_PATH}" \
   --include \
   --request GET \
