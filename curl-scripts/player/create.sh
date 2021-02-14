@@ -8,6 +8,11 @@ curl "${API}${URL_PATH}" \
   --header "Content-Type: application/json" \
   --header "Authorization: Bearer ${TOKEN}" \
   --data '{
+    "player": {
+      "name": "'"${NAME}"'",
+      "position": "'"${POSITION}"'"
+    }
+  }'
 
 
 echo

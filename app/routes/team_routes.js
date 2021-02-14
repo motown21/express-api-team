@@ -6,7 +6,7 @@ const passport = require('passport')
 // pull in Mongoose model for teams
 const Team = require('../models/team')
 
-// this is a collection of methods that help us detect situations when we need
+// this is a collnom ection of methods that help us detect situations when we need
 // to throw a custom error
 const customErrors = require('../../lib/custom_errors')
 

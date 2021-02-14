@@ -9,14 +9,24 @@ const requireToken = passport.authenticate('bearer', { session: false })
 
 const router = express.Router()
 
+// INDEX
+router.get('/players', requireToken, (req, res, next) => {
+  Player.find({ owner: req.user._id })
+    .then(players => {
+      return players.map(player => player.toObject())
+    })
+    .then(players => res.status(200).json({ players: players }))
+    .catch(next)
+})
+
 // CREATE
 router.post('/players', requireToken, (req, res, next) => {
-  // set owner of new team to be current user
+  // set owner of new player to be current user
   req.body.player.owner = req.user.id
   const playerData = req.body.player
 
   Player.create(playerData)
-    // respond to succesful `create` with status 201 and JSON of new "team"
+    // respond to succesful `create` with status 201 and JSON of new "player"
     .then(player => {
       res.status(201).json({ player: player.toObject() })
     })
