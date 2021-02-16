@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-
+// const playerSchema = require('./player')
+// const Player = mongoose.model('Player', playerSchema)
 const teamSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -25,7 +26,11 @@ const teamSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
-  }
+  },
+  player: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }]
 }, {
   timestamps: true
 })
